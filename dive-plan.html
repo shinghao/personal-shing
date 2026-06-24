@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shing & GF — Dive Plan 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0a0f1e; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+    .header { background: linear-gradient(180deg, #0f172a 0%, #0a0f1e 100%); padding: 32px 16px 20px; border-bottom: 1px solid #1e293b; }
+    .header-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: #38bdf8; text-transform: uppercase; margin-bottom: 4px; }
+    .header h1 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .header p { font-size: 13px; color: #64748b; }
+
+    .tabs { display: flex; overflow-x: auto; background: #0f172a; border-bottom: 1px solid #1e293b; position: sticky; top: 0; z-index: 100; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { padding: 14px 16px; font-size: 13px; font-weight: 500; white-space: nowrap; cursor: pointer; color: #64748b; border-bottom: 2px solid transparent; transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none; }
+    .tab.active { color: #38bdf8; border-bottom-color: #38bdf8; }
+
+    .content { padding: 16px; max-width: 680px; margin: 0 auto; }
+
+    .section-title { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+
+    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+    .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; cursor: pointer; }
+    .card-left { display: flex; align-items: flex-start; gap: 12px; }
+    .card-icon { font-size: 24px; margin-top: 2px; }
+    .card-name { font-weight: 700; color: #fff; font-size: 15px; }
+    .card-date { font-size: 12px; color: #64748b; margin-top: 3px; }
+    .card-right { text-align: right; flex-shrink: 0; }
+    .card-dives { font-size: 13px; font-weight: 700; color: #38bdf8; }
+    .card-cost { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+    .badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; color: #fff; margin-left: 6px; vertical-align: middle; }
+    .badge-confirmed { background: #10b981; }
+    .badge-planned { background: #0ea5e9; }
+    .badge-optional { background: #f59e0b; }
+
+    .card-detail { margin-top: 16px; padding-top: 16px; border-top: 1px solid #1e293b; display: none; }
+    .card-detail.open { display: block; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+    .stat-box { background: #1e293b; border-radius: 10px; padding: 10px; text-align: center; }
+    .stat-label { font-size: 10px; color: #64748b; margin-bottom: 2px; }
+    .stat-value { font-size: 18px; font-weight: 800; color: #fff; }
+    .stat-value.blue { color: #38bdf8; }
+
+    .detail-label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; margin-top: 12px; }
+    .detail-text { font-size: 13px; color: #cbd5e1; line-height: 1.6; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .tag { font-size: 11px; background: #0c2340; color: #7dd3fc; padding: 4px 10px; border-radius: 99px; border: 1px solid #1e4976; }
+
+    .dive-counter { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+    .dive-counter-title { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+    .dive-dots { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .dive-dot { text-align: center; }
+    .dive-dot-icon { font-size: 14px; }
+    .dive-dot-count { font-size: 11px; font-weight: 800; color: #38bdf8; }
+
+    .gear-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+    .gear-when { font-size: 10px; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .gear-item { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .gear-reason { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+
+    .cert-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+    .cert-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .cert-name { font-size: 14px; font-weight: 700; color: #fff; }
+    .cert-priority { font-size: 11px; font-weight: 700; }
+    .p-high { color: #10b981; }
+    .p-medium { color: #f59e0b; }
+    .p-defer { color: #64748b; }
+    .p-done { color: #38bdf8; }
+    .cert-meta { display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+    .cert-meta-item { font-size: 11px; color: #64748b; }
+    .cert-meta-item span { color: #cbd5e1; font-weight: 600; }
+    .cert-why { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+
+    .future-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; padding: 14px; margin-bottom: 10px; cursor: pointer; }
+    .future-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .future-name { font-size: 14px; font-weight: 700; color: #fff; }
+    .future-highlight { font-size: 12px; color: #64748b; margin-top: 3px; }
+    .future-priority { font-size: 11px; font-weight: 700; text-align: right; flex-shrink: 0; margin-left: 8px; }
+    .future-detail { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid #1e293b; }
+    .future-detail.open { display: block; }
+    .future-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
+    .future-box { background: #1e293b; border-radius: 10px; padding: 10px; }
+    .future-box-label { font-size: 10px; color: #64748b; margin-bottom: 2px; }
+    .future-box-value { font-size: 12px; color: #fff; font-weight: 600; line-height: 1.4; }
+
+    .leave-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+    .leave-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #1e293b; font-size: 13px; }
+    .leave-row:last-child { border-bottom: none; }
+    .leave-trip { color: #cbd5e1; }
+    .leave-vals { display: flex; gap: 16px; }
+    .leave-val { color: #fff; font-weight: 700; }
+    .leave-val span { color: #64748b; font-weight: 400; font-size: 11px; }
+
+    .info-card { background: #0f172a; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+    .info-card.amber { border: 1px solid #78350f; }
+    .info-card.blue { border: 1px solid #1e3a5f; }
+    .info-card.green { border: 1px solid #14532d; }
+    .info-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+    .info-title.amber { color: #fbbf24; }
+    .info-title.blue { color: #38bdf8; }
+    .info-title.green { color: #34d399; }
+    .info-list { list-style: none; }
+    .info-list li { font-size: 12px; color: #94a3b8; line-height: 1.6; padding-left: 12px; position: relative; }
+    .info-list li::before { content: "•"; position: absolute; left: 0; color: #475569; }
+
+    .total-bar { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; padding: 14px; margin-bottom: 16px; display: flex; justify-content: space-around; text-align: center; }
+    .total-item-label { font-size: 11px; color: #64748b; margin-bottom: 4px; }
+    .total-item-value { font-size: 20px; font-weight: 800; color: #38bdf8; }
+    .total-item-sub { font-size: 10px; color: #475569; margin-top: 2px; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .chevron { display: inline-block; transition: transform 0.2s; color: #475569; font-size: 12px; margin-left: 4px; }
+    .chevron.open { transform: rotate(180deg); }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">Shing &amp; GF</div>
+  <h1>Dive Pipeline 2026–2027</h1>
+  <p>AOW + Nitrox · ~20 dives · Building to 85+</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('trips')">2026 Plan</button>
+  <button class="tab" onclick="switchTab('gear')">Gear</button>
+  <button class="tab" onclick="switchTab('certs')">Certs</button>
+  <button class="tab" onclick="switchTab('future')">Future Dives</button>
+  <button class="tab" onclick="switchTab('leave')">Leave</button>
+</div>
+
+<div class="content">
+
+  <!-- TRIPS TAB -->
+  <div class="tab-content active" id="tab-trips">
+    <div class="section-title">8 Trips · 65+ Dives</div>
+
+    <div class="total-bar">
+      <div>
+        <div class="total-item-label">Total Dives (Shing)</div>
+        <div class="total-item-value">85+</div>
+        <div class="total-item-sub">from ~20</div>
+      </div>
+      <div>
+        <div class="total-item-label">Total Dives (GF)</div>
+        <div class="total-item-value">78+</div>
+        <div class="total-item-sub">from ~19</div>
+      </div>
+      <div>
+        <div class="total-item-label">Est. Cost</div>
+        <div class="total-item-value">~21k</div>
+        <div class="total-item-sub">SGD, couple</div>
+      </div>
+    </div>
+
+    <div class="dive-counter">
+      <div class="dive-counter-title">Shing dive count after each trip</div>
+      <div class="dive-dots">
+        <div class="dive-dot"><div class="dive-dot-icon">🐢</div><div class="dive-dot-count">26</div></div>
+        <div style="color:#1e293b;font-size:16px;">→</div>
+        <div class="dive-dot"><div class="dive-dot-icon">🤿</div><div class="dive-dot-count">32</div></div>
+        <div style="color:#1e293b;font-size:16px;">→</div>
+        <div class="dive-dot"><div class="dive-dot-icon">🦈</div><div class="dive-dot-count">38</div></div>
+        <div style="color:#1e293b;font-size:16px;">→</div>
+        <div class="dive-dot"><div class="dive-dot-icon">🦑</div><div class="dive-dot-count">46</div></div>
+        <div style="color:#1e293b;font-size:16px;">→</div>
+        <div class="dive-dot"><div class="dive-dot-icon">🐡</div><div class="dive-dot-count">54</div></div>
+        <div style="color:#1e293b;font-size:16px;">→</div>
+        <div class="dive-dot"><div class="dive-dot-icon">⚓</div><div class="dive-dot-count">65</div></div>
+        <div style="color:#1e293b;font-size:16px;">→</div>
+        <div class="dive-dot"><div class="dive-dot-icon">📸</div><div class="dive-dot-count">69</div></div>
+        <div style="color:#1e293b;font-size:16px;">→</div>
+        <div class="dive-dot"><div class="dive-dot-icon">🗾</div><div class="dive-dot-count">89</div></div>
+      </div>
+    </div>
+
+    <!-- Trip 1: Perhentian -->
+    <div class="card">
+      <div class="card-header" onclick="toggleCard('t1')">
+        <div class="card-left">
+          <div class="card-icon">🐢</div>
+          <div>
+            <div class="card-name">Perhentian <span class="badge badge-confirmed">Confirmed</span></div>
+            <div class="card-date">Fri 26 Jun 2026</div>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="card-dives">+6 dives</div>
+          <div class="card-cost">SGD 2,000</div>
+        </div>
+      </div>
+      <div class="card-detail" id="t1">
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-label">Leave Shing</div><div class="stat-value">2d</div></div>
+          <div class="stat-box"><div class="stat-label">Leave GF</div><div class="stat-value">1d</div></div>
+          <div class="stat-box"><div class="stat-label">After (GF)</div><div class="stat-value blue">19</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">6 dives, no night dive. East coast Malaysia, open Mar–Oct. Good reef, turtles. GF at 19 dives after this.</div>
+        <div class="tags"><span class="tag">Reef</span><span class="tag">Turtles</span><span class="tag">East Coast Malaysia</span></div>
+      </div>
+    </div>
+
+    <!-- Trip 2: Phuket -->
+    <div class="card">
+      <div class="card-header" onclick="toggleCard('t2')">
+        <div class="card-left">
+          <div class="card-icon">🤿</div>
+          <div>
+            <div class="card-name">Phuket <span class="badge badge-planned">Planned</span></div>
+            <div class="card-date">Fri 25 Jul – Mon 28 Jul 2026</div>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="card-dives">+6 dives</div>
+          <div class="card-cost">SGD 1,800</div>
+        </div>
+      </div>
+      <div class="card-detail" id="t2">
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-label">Leave Shing</div><div class="stat-value">0d</div></div>
+          <div class="stat-box"><div class="stat-label">Leave GF</div><div class="stat-value">0d</div></div>
+          <div class="stat-box"><div class="stat-label">After (GF)</div><div class="stat-value blue">25</div></div>
+        </div>
+        <div class="detail-label">Flight</div>
+        <div class="detail-text">Scoot TR652 departs 18:50 SIN → arrives 19:50 Phuket (18:50 local). Direct, ~1.5hrs. Operates Friday. Avoid QZ507 (47% OTP, chronic delays).</div>
+        <div class="detail-label">Operator</div>
+        <div class="detail-text">Aussie Divers — done Open Water here, trusted school. 6 boat dives at Racha Yai/Racha Noi. Deep Diver cert included in cost.</div>
+        <div class="detail-label">Gear Shopping</div>
+        <div class="detail-text">Phuket has large dive equipment stores. Buy fins and anything else on Day 2 after first dive — confirm what you want from Day 1 experience first.</div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">Deep Diver cert unlocks 40m. Done at Racha Yai — controlled depth, structured dives. July conditions generally fine at Racha. Zero leave both. Fly home Mon.</div>
+        <div class="tags"><span class="tag">Deep Diver Cert</span><span class="tag">Racha Yai</span><span class="tag">Gear Shopping</span></div>
+      </div>
+    </div>
+
+    <!-- Trip 3: Tioman -->
+    <div class="card">
+      <div class="card-header" onclick="toggleCard('t3')">
+        <div class="card-left">
+          <div class="card-icon">🦈</div>
+          <div>
+            <div class="card-name">Tioman <span class="badge badge-planned">Planned</span></div>
+            <div class="card-date">Aug–Oct 2026 (any Sat–Mon)</div>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="card-dives">+6 dives</div>
+          <div class="card-cost">SGD 1,400</div>
+        </div>
+      </div>
+      <div class="card-detail" id="t3">
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-label">Leave Shing</div><div class="stat-value">0d</div></div>
+          <div class="stat-box"><div class="stat-label">Leave GF</div><div class="stat-value">0d</div></div>
+          <div class="stat-box"><div class="stat-label">After (GF)</div><div class="stat-value blue">31</div></div>
+        </div>
+        <div class="detail-label">Operator</div>
+        <div class="detail-text">Simply Scuba — SGD 700/pax total including transport and hotel. Sharks sightings common. Avoid TDB Dive Buddy (up to 20 divers per guide).</div>
+        <div class="detail-label">Purpose</div>
+        <div class="detail-text">Night dive for GF — she has only done 1 and was scared. Tioman night dive is clear warm water with reef structure, much easier than Singapore night (murky black water). Similar to Tulamben Liberty night which comes later.</div>
+        <div class="detail-label">Season</div>
+        <div class="detail-text">East coast Malaysia open Mar–Oct, closed Nov–Feb. Aug–Oct all good.</div>
+        <div class="tags"><span class="tag">Night Dive (GF)</span><span class="tag">Sharks</span><span class="tag">Reef</span><span class="tag">Turtles</span></div>
+      </div>
+    </div>
+
+    <!-- Trip 4: Singapore Phase 1 -->
+    <div class="card">
+      <div class="card-header" onclick="toggleCard('t4')">
+        <div class="card-left">
+          <div class="card-icon">🦑</div>
+          <div>
+            <div class="card-name">Singapore Diving — Phase 1 <span class="badge badge-planned">Planned</span></div>
+            <div class="card-date">Sep 2026 (any weekend)</div>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="card-dives">+8 dives</div>
+          <div class="card-cost">SGD 1,030</div>
+        </div>
+      </div>
+      <div class="card-detail" id="t4">
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-label">Leave Shing</div><div class="stat-value">0d</div></div>
+          <div class="stat-box"><div class="stat-label">Leave GF</div><div class="stat-value">0d</div></div>
+          <div class="stat-box"><div class="stat-label">After (GF)</div><div class="stat-value blue">35</div></div>
+        </div>
+        <div class="detail-label">Cost breakdown</div>
+        <div class="detail-text">SGD 960 shared package (12 dives total, 6 each) + SGD 70 equipment rental (1 day, 2 pax). Remaining 4 dives carried to Phase 2.</div>
+        <div class="detail-label">Operator</div>
+        <div class="detail-text">Cuddlefish — SGD 960 for 12-dive shared guide package. Morning + afternoon sessions on same day maximises the SGD 70 equipment rental. Wetsuit required — own wetsuit saves SGD 20/pax/day.</div>
+        <div class="detail-label">Purpose</div>
+        <div class="detail-text">Clock dives in local conditions. Muck diving builds buoyancy in challenging low-viz environment. GF at 35 dives is ready for macro observation. Phase 1 is about accumulating dives, not photography yet.</div>
+        <div class="tags"><span class="tag">Muck Diving</span><span class="tag">Buoyancy</span><span class="tag">Nudibranchs</span><span class="tag">Frogfish</span></div>
+      </div>
+    </div>
+
+    <!-- Trip 5: Nusa Penida -->
+    <div class="card">
+      <div class="card-header" onclick="toggleCard('t5')">
+        <div class="card-left">
+          <div class="card-icon">🐡</div>
+          <div>
+            <div class="card-name">Nusa Penida — Mola Mola <span class="badge badge-optional">Optional</span></div>
+            <div class="card-date">Late Sep – Early Oct 2026</div>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="card-dives">+8 dives</div>
+          <div class="card-cost">SGD 1,400</div>
+        </div>
+      </div>
+      <div class="card-detail" id="t5">
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-label">Leave Shing</div><div class="stat-value">1d</div></div>
+          <div class="stat-box"><div class="stat-label">Leave GF</div><div class="stat-value">1d</div></div>
+          <div class="stat-box"><div class="stat-label">After (GF)</div><div class="stat-value blue">43</div></div>
+        </div>
+        <div class="detail-label">Logistics</div>
+        <div class="detail-text">Depart Thu night after work → sleep Sanur (near fast boat pier) → first boat 7am Sat → arrive Nusa Penida 7:45am → catch 8:30am dive boat. Tight but doable if pre-booked. 1 leave each (Fri).</div>
+        <div class="detail-label">Marine Life</div>
+        <div class="detail-text">Mola mola (ocean sunfish) season Jul–Oct, peak Sep–Oct when water coldest and clearest. Mantas at Manta Point year-round. Crystal Bay for mola mola — strong cold upwellings. Not guaranteed but Sep/Oct best odds.</div>
+        <div class="detail-label">Conditions</div>
+        <div class="detail-text">Strong unpredictable currents — manageable at 35+ dives but demanding. Thermoclines hit hard. More challenging than anything done before. Guide stays close.</div>
+        <div class="tags"><span class="tag">Mola Mola</span><span class="tag">Manta Rays</span><span class="tag">Crystal Bay</span><span class="tag">Strong Drift</span></div>
+      </div>
+    </div>
+
+    <!-- Trip 6: Tulamben -->
+    <div class="card">
+      <div class="card-header" onclick="toggleCard('t6')">
+        <div class="card-left">
+          <div class="card-icon">⚓</div>
+          <div>
+            <div class="card-name">Tulamben + Amed <span class="badge badge-planned">Planned</span></div>
+            <div class="card-date">Sep–Oct 2026 (Sat–Tue)</div>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="card-dives">+11 dives</div>
+          <div class="card-cost">SGD 1,500</div>
+        </div>
+      </div>
+      <div class="card-detail" id="t6">
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-label">Leave Shing</div><div class="stat-value">0d</div></div>
+          <div class="stat-box"><div class="stat-label">Leave GF</div><div class="stat-value">1d</div></div>
+          <div class="stat-box"><div class="stat-label">After (GF)</div><div class="stat-value blue">54</div></div>
+        </div>
+        <div class="detail-label">Cost breakdown</div>
+        <div class="detail-text">Flights SGD 600 (2 pax return) + Hotel SGD 240 (4 nights × SGD 60, Mimpi or Palm Springs) + Diving SGD 500 (2 pax, Dive Concept) + Private car SGD 160 (SGD 80/trip × 2). Fly Tue home, GF takes Mon leave.</div>
+        <div class="detail-label">Structure (3 dive days)</div>
+        <div class="detail-text">Fri: fly after 7pm, arrive ~midnight. Sat: 4 dives (Seraya macro 5:15am + Drop Off + Coral Garden + Night dive). Sun: 4 dives (Amed — Pyramids + Jemeluk Wall + Japanese Wreck + Boga Wreck 30m). Mon WFH: 3 dives (Early Liberty 5:15am + 8am dive + 13:00 lunch dive). Fly Tue.</div>
+        <div class="detail-label">Operator</div>
+        <div class="detail-text">Dive Concept — up to 6 dives/day in Tulamben, 4/day in Amed. Has own vehicles across 15+ sites. Booties rental Rp 30,000/day (SGD 3) — no need to own yet.</div>
+        <div class="detail-label">Camera</div>
+        <div class="detail-text">Buy macro lens + DJI M67 adapter BEFORE this trip — Seraya and Batu Niti have world-class macro critters (frogfish, ghost pipefish, harlequin shrimp, wonderpus octopus). Without macro lens you'll shoot blurry nothing on nudis.</div>
+        <div class="detail-label">Boga Wreck note</div>
+        <div class="detail-text">30m depth — requires Deep Diver cert (done in Phuket) or AOW minimum. Confirmed accessible with your certs.</div>
+        <div class="tags"><span class="tag">Liberty Wreck</span><span class="tag">Boga Wreck (30m)</span><span class="tag">Seraya Macro</span><span class="tag">Night Dive</span><span class="tag">Amed</span></div>
+      </div>
+    </div>
+
+    <!-- Trip 7: Singapore Phase 2 -->
+    <div class="card">
+      <div class="card-header" onclick="toggleCard('t7')">
+        <div class="card-left">
+          <div class="card-icon">📸</div>
+          <div>
+            <div class="card-name">Singapore Diving — Phase 2 <span class="badge badge-optional">Optional</span></div>
+            <div class="card-date">Nov 2026 (any weekend)</div>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="card-dives">+4 dives</div>
+          <div class="card-cost">SGD 70</div>
+        </div>
+      </div>
+      <div class="card-detail" id="t7">
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-label">Leave Shing</div><div class="stat-value">0d</div></div>
+          <div class="stat-box"><div class="stat-label">Leave GF</div><div class="stat-value">0d</div></div>
+          <div class="stat-box"><div class="stat-label">After (GF)</div><div class="stat-value blue">58</div></div>
+        </div>
+        <div class="detail-label">Cost breakdown</div>
+        <div class="detail-text">Remaining 4 dives from Phase 1 SGD 960 package (already paid). Only cost: SGD 70 equipment rental (1 day, 2 pax).</div>
+        <div class="detail-label">Purpose</div>
+        <div class="detail-text">Now with macro lens + own wetsuit + 55+ dives. Intentional macro photography practice on Singapore muck critters. Much more rewarding at this dive count vs Phase 1.</div>
+        <div class="tags"><span class="tag">Macro Photography</span><span class="tag">Nudibranch Hunting</span><span class="tag">Frogfish</span></div>
+      </div>
+    </div>
+
+    <!-- Trip 8: Okinawa -->
+    <div class="card">
+      <div class="card-header" onclick="toggleCard('t8')">
+        <div class="card-left">
+          <div class="card-icon">🗾</div>
+          <div>
+            <div class="card-name">Okinawa <span class="badge badge-planned">Planned</span></div>
+            <div class="card-date">Fri 6 Nov – Tue 17 Nov 2026</div>
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="card-dives">+20 dives</div>
+          <div class="card-cost">SGD 6,500–7,500</div>
+        </div>
+      </div>
+      <div class="card-detail" id="t8">
+        <div class="stat-grid">
+          <div class="stat-box"><div class="stat-label">Leave Shing</div><div class="stat-value">4d</div></div>
+          <div class="stat-box"><div class="stat-label">Leave GF</div><div class="stat-value">4d</div></div>
+          <div class="stat-box"><div class="stat-label">After (GF)</div><div class="stat-value blue">78</div></div>
+        </div>
+        <div class="detail-label">Deepavali anchor</div>
+        <div class="detail-text">Mon 9 Nov = Deepavali PH (in-lieu). Fri 6 Nov depart. Sat 7, Sun 8, Mon 9 (PH) = 3 free days. Tue 10–Fri 13 = 4 leave days each. Sat 14, Sun 15 = weekend. Mon 16 = WFH. Tue 17 = fly home.</div>
+        <div class="detail-label">Structure</div>
+        <div class="detail-text">Ishigaki (3–4 days) → manta rays at Manta Scramble, Oct–Mar peak, best in region. Kerama (3–4 days) → Kerama Blue visibility, turtles, reef. USS Emmons (Kerama area) → WWII US destroyer 22–40m, assess readiness on ground (need Deep cert + 50+ dives). Naha base for internal flights.</div>
+        <div class="detail-label">Cost estimate</div>
+        <div class="detail-text">Flights SIN→Ishigaki ~SGD 1,000/pax return (via Tokyo/Osaka). Internal Ishigaki→Naha ~SGD 150/pax. Hotels 10 nights ~SGD 130/night = SGD 1,300. Diving ~SGD 180/day/pax × 7 dive days × 2 = SGD 2,520. Food SGD 1,000. Total: SGD 6,500–7,500.</div>
+        <div class="detail-label">Why Nov?</div>
+        <div class="detail-text">Ishigaki manta season Oct–Mar. Typhoon season winds down by Nov. Kerama Blue visibility best Sep–Jan. Deepavali anchor minimises leave. Nov is ideal window for this combination.</div>
+        <div class="tags"><span class="tag">Ishigaki Mantas</span><span class="tag">Kerama Blue</span><span class="tag">USS Emmons</span><span class="tag">Turtles</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GEAR TAB -->
+  <div class="tab-content" id="tab-gear">
+    <div class="section-title">Equipment Timeline</div>
+
+    <div class="gear-card">
+      <div class="gear-when">Before Phuket — Jul 2026</div>
+      <div class="gear-item">Mask — Gull Luvos (Shing) SGD 335 | Gull Coco (GF) already bought SGD 160</div>
+      <div class="gear-reason">Shing: Gull Luvos SGD 315 + SGD 20 anti-fog lens = SGD 335. GF: Gull Coco (Black/Marble Shell Blue) SGD 140 already purchased + SGD 20 anti-fog lens = SGD 160. Fit is personal — can't rely on rental for every dive from here. Both masks are low-volume, ideal for freediving compatibility later.</div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">Before Singapore Diving — Sep 2026</div>
+      <div class="gear-item">Wetsuit 3mm — Scubapro Definition SGD 390 each</div>
+      <div class="gear-reason">Required for Singapore diving (water feels cold after 2+ hours). Saves SGD 20/pax/day rental. Why Scubapro Definition over others: uses Everflex neoprene (stretches more than standard neoprene, much easier to put on), better fit retention after repeated use, superior seam construction, noticeably more comfortable on multi-dive days. Cressi Fast (SGD 150–180) is the budget alternative but thinner neoprene quality shows after 20+ uses. If budget is tight, Cressi Fast is acceptable — but Definition is the better long-term buy.</div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">Phuket Day 2+ — Jul 2026</div>
+      <div class="gear-item">Fins — Mares Avanti Quattro Plus (Shing, white) SGD 170 | Gull Super MEW-X Shell Blue (GF) price TBC</div>
+      <div class="gear-reason">Buy at Phuket dive store after Day 1 — confirm comfort from Day 1 experience first. Shing: Mares Avanti Quattro Plus — stiff blade, GUE-compatible, excellent frog kick control. White, SGD 170. GF: Gull Super MEW-X in Shell Blue to match her Coco mask. Gull is a Japanese brand — may be cheaper and better stocked in Okinawa. Consider waiting to buy GF fins in Okinawa instead. Avoid Scubapro Seawing Supernova — hinged blade makes frog kicks harder, not GUE-compatible.</div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">Before Tioman — Aug 2026 (or rent at SGD 10/dive)</div>
+      <div class="gear-item">Dive Torch — X-Adventurer M1800 SGD 120 each</div>
+      <div class="gear-reason">Torch rental is SGD 10/dive — at this rate, buying breaks even at ~12 night dives which won't happen for a while. Renting is fine until you're doing frequent night dives or a liveaboard. However: having your own torch means you can confidently do night dives anywhere without worrying about availability. Buy before Tioman if you want reliability, or keep renting until Okinawa. Each diver needs one — backup torch also recommended before first night dive.</div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">Before Tulamben — Sep/Oct 2026</div>
+      <div class="gear-item">Macro Lens — DIVEVERYDAY M67 adapter + M67 macro wet lens (~SGD 150–200 total)</div>
+      <div class="gear-reason">Buy BEFORE Tulamben — not after. Tulamben's Seraya and Batu Niti sites have world-class macro: frogfish, ghost pipefish, harlequin shrimp, wonderpus octopus, nudibranchs. Without a macro lens the DJI Action 5 Pro cannot resolve small critters well in blue-green water — you'll shoot blurry nothing. With M67 macro wet lens, you get usable shots even at 40+ dives. At ~50 dives and 65+ buoyancy is stable enough to hover and shoot.</div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">Okinawa — Nov 2026 (GF only, consider)</div>
+      <div class="gear-item">Fins — Gull Super MEW-X Shell Blue (GF)</div>
+      <div class="gear-reason">Gull is Japanese brand — better selection, likely cheaper in Japan vs Singapore. If not bought in Phuket, Okinawa is the ideal place to buy GF's Gull fins.</div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">~60–80 dives — Post Okinawa (Optional)</div>
+      <div class="gear-item">Regulator — Optional, ~SGD 500+ each</div>
+      <div class="gear-reason">Hygiene and familiarity are the main reasons to own a reg. Rental regs are shared by many divers. At 60+ dives on bigger trips (liveaboards, Sipadan), own reg makes sense. Not urgent — rent everywhere cheaply until then. BCD likely defer indefinitely given travel style (heavy to fly with, cheap to rent in SE Asia at Rp 50,000/day).</div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">~60–80 dives — After Singapore Phase 2 (assess)</div>
+      <div class="gear-item">Olympus TG-7 Underwater Camera (~SGD 600)</div>
+      <div class="gear-reason">Dedicated underwater compact — better than action cam for macro stills, built-in microscope mode, RAW shooting. Makes sense when you've outgrown the macro wet lens on the Action 5 Pro. Assess after Singapore Phase 2: if getting good shots with the M67 macro setup, TG-7 may not be needed yet. If macro photography becomes serious (Lembeh trip planning), then yes. Not a priority until 60+ dives.</div>
+    </div>
+
+    <div class="info-card amber">
+      <div class="info-title amber">⚠️ What NOT to buy yet</div>
+      <ul class="info-list">
+        <li>BCD — heavy to travel with, SGD 5/day rental in Tulamben. Defer indefinitely given travel style.</li>
+        <li>Booties — Dive Concept rents for Rp 30,000 (SGD 3). Only needed with open-heel fins.</li>
+        <li>Scubapro Seawing Supernova fins — hinged blade fights against GUE frog kick technique.</li>
+        <li>Divevolk SeaTouch 4 — phone housing, separate system from DJI Action 5 Pro. Not needed while you have the action cam.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CERTS TAB -->
+  <div class="tab-content" id="tab-certs">
+    <div class="section-title">Certifications</div>
+
+    <div class="info-card blue">
+      <div class="info-title blue">✅ Already Completed</div>
+      <ul class="info-list">
+        <li>Open Water — foundational cert, 18m depth limit</li>
+        <li>Advanced Open Water — 30m depth limit, unlocks most recreational sites</li>
+        <li>Nitrox (EAN) — extended bottom time, reduced nitrogen, e-learning only</li>
+      </ul>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-header">
+        <div class="cert-name">Deep Diver</div>
+        <div class="cert-priority p-high">HIGH PRIORITY</div>
+      </div>
+      <div class="cert-meta">
+        <div class="cert-meta-item">Where: <span>Phuket — Aussie Divers</span></div>
+        <div class="cert-meta-item">When: <span>Jul 2026</span></div>
+        <div class="cert-meta-item">Min. dives: <span>~25</span></div>
+      </div>
+      <div class="cert-why">Unlocks 40m. Essential before Boga Wreck in Tulamben (30m), USS Emmons in Okinawa (22–40m), and any serious wall/wreck diving. Do it properly — Aussie Divers actually teaches gas planning, nitrogen narcosis management, emergency procedures. Not a checkbox cert. This is the most important next cert.</div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-header">
+        <div class="cert-name">Drift Diver</div>
+        <div class="cert-priority p-medium">MEDIUM</div>
+      </div>
+      <div class="cert-meta">
+        <div class="cert-meta-item">Where: <span>Nusa Penida or Sipadan</span></div>
+        <div class="cert-meta-item">When: <span>2027</span></div>
+        <div class="cert-meta-item">Min. dives: <span>50+</span></div>
+      </div>
+      <div class="cert-why">Unlocks confident current diving at Nusa Penida (strong unpredictable currents), Sipadan (drift along turtle walls), and Raja Ampat (Blue Magic current site). Not needed for Phuket or Tulamben. Natural next cert after Deep. Do alongside Nusa Penida trip in 2027 if skipped in 2026.</div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-header">
+        <div class="cert-name">Wreck Diver</div>
+        <div class="cert-priority p-medium">MEDIUM</div>
+      </div>
+      <div class="cert-meta">
+        <div class="cert-meta-item">Where: <span>Tulamben or Coron</span></div>
+        <div class="cert-meta-item">When: <span>2027</span></div>
+        <div class="cert-meta-item">Min. dives: <span>50+</span></div>
+      </div>
+      <div class="cert-why">Unlocks wreck penetration diving — going inside wrecks, not just hovering outside. Makes Coron's 10 Japanese wrecks significantly more rewarding. USS Emmons penetration also benefits. Liberty wreck in Tulamben is an ideal training wreck. Do in Coron or on a return Tulamben trip.</div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-header">
+        <div class="cert-name">GUE Basic Fundamentals</div>
+        <div class="cert-priority p-high">HIGH — Long term</div>
+      </div>
+      <div class="cert-meta">
+        <div class="cert-meta-item">Where: <span>Singapore or KL</span></div>
+        <div class="cert-meta-item">When: <span>2027–2028</span></div>
+        <div class="cert-meta-item">Min. dives: <span>60–80</span></div>
+        <div class="cert-meta-item">Cost: <span>~SGD 2,000 each</span></div>
+      </div>
+      <div class="cert-why">Resets your technique baseline — buoyancy, trim, propulsion, gas management done properly. Not a specialty cert, it's a philosophy. All current gear (Gull mask, Mares Avanti fins, Scubapro wetsuit) is already GUE-compatible. Entry point to tech diving if desired. Expensive but genuinely transforms your diving. Do only when you have own gear and 60–80 dives of muscle memory to reset.</div>
+    </div>
+
+    <div class="info-card amber">
+      <div class="info-title amber">❌ Not worth doing</div>
+      <ul class="info-list">
+        <li>Night Diver specialty — no unlock value, you'll do night dives naturally and the cert just formalises experience you already have. Save the money.</li>
+        <li>Peak Performance Buoyancy — useless on rental gear. Buoyancy is tuned to your specific setup. Wait until you own BCD + wetsuit consistently, then it sticks. By that point you'll have buoyancy from experience anyway.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FUTURE DIVES TAB -->
+  <div class="tab-content" id="tab-future">
+    <div class="section-title">Bucket List Dive Sites</div>
+
+    <div class="future-card" onclick="toggleFuture('f1')">
+      <div class="future-header">
+        <div>
+          <div class="future-name">🇲🇾 Tenggol</div>
+          <div class="future-highlight">Whale sharks + mantas</div>
+        </div>
+        <div class="future-priority p-high">HIGH<br>Sep 2027</div>
+      </div>
+      <div class="future-detail" id="f1">
+        <div class="future-grid">
+          <div class="future-box"><div class="future-box-label">Best time</div><div class="future-box-value">Sep (peak Aug–Oct)</div></div>
+          <div class="future-box"><div class="future-box-label">Min. dives</div><div class="future-box-value">20+</div></div>
+          <div class="future-box"><div class="future-box-label">Days needed</div><div class="future-box-value">3 nights (Fri–Mon)</div></div>
+          <div class="future-box"><div class="future-box-label">Leave</div><div class="future-box-value">Shing: 1d / GF: 0d</div></div>
+          <div class="future-box"><div class="future-box-label">Est. cost</div><div class="future-box-value">~SGD 400–500/couple</div></div>
+          <div class="future-box"><div class="future-box-label">Transport</div><div class="future-box-value">Overnight bus SIN → Kuala Terengganu Fri, fly back Mon</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">30–40% whale shark probability in September at Tokong Talang. Very cheap and easy zero-leave trip for GF. Search "Kuala Terengganu" not "Dungun" on bus booking platforms. Tenggol Coral Beach Resort is the base. East coast closed Nov–Feb.</div>
+      </div>
+    </div>
+
+    <div class="future-card" onclick="toggleFuture('f2')">
+      <div class="future-header">
+        <div>
+          <div class="future-name">🇲🇾 Sipadan / Mabul</div>
+          <div class="future-highlight">Barracuda tornado, turtle heaven, world-class reef</div>
+        </div>
+        <div class="future-priority p-high">HIGH<br>2027</div>
+      </div>
+      <div class="future-detail" id="f2">
+        <div class="future-grid">
+          <div class="future-box"><div class="future-box-label">Best time</div><div class="future-box-value">Mar–Oct (closed Nov)</div></div>
+          <div class="future-box"><div class="future-box-label">Min. dives</div><div class="future-box-value">50+</div></div>
+          <div class="future-box"><div class="future-box-label">Days needed</div><div class="future-box-value">5–7 nights minimum</div></div>
+          <div class="future-box"><div class="future-box-label">Leave</div><div class="future-box-value">Shing: 3–4d / GF: 3–4d</div></div>
+          <div class="future-box"><div class="future-box-label">Est. cost</div><div class="future-box-value">~SGD 2,500–3,500/couple</div></div>
+          <div class="future-box"><div class="future-box-label">Transport</div><div class="future-box-value">SIN→Tawau flight, speedboat to Mabul</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">Sipadan permit: 176 divers/day, book 6 months ahead. AOW minimum. 3 dives/day at Sipadan, rest at Mabul for macro. Barracuda Point, Turtle Cavern, Whitetip Avenue — genuinely one of the top 5 dive sites on earth. Don't go before 50 dives, you'll miss half of what's there.</div>
+      </div>
+    </div>
+
+    <div class="future-card" onclick="toggleFuture('f3')">
+      <div class="future-header">
+        <div>
+          <div class="future-name">🇹🇭 Similan Islands (Liveaboard)</div>
+          <div class="future-highlight">Whale sharks, mantas, leopard sharks</div>
+        </div>
+        <div class="future-priority p-medium">MEDIUM<br>Good Friday 2027</div>
+      </div>
+      <div class="future-detail" id="f3">
+        <div class="future-grid">
+          <div class="future-box"><div class="future-box-label">Best time</div><div class="future-box-value">Nov–Apr (closed May–Oct)</div></div>
+          <div class="future-box"><div class="future-box-label">Min. dives</div><div class="future-box-value">30+</div></div>
+          <div class="future-box"><div class="future-box-label">Days needed</div><div class="future-box-value">5–7 nights liveaboard</div></div>
+          <div class="future-box"><div class="future-box-label">Leave</div><div class="future-box-value">Shing: 2d / GF: 2d</div></div>
+          <div class="future-box"><div class="future-box-label">Est. cost</div><div class="future-box-value">~SGD 1,500–2,500/couple</div></div>
+          <div class="future-box"><div class="future-box-label">Transport</div><div class="future-box-value">SIN→Phuket, join liveaboard Khao Lak</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">Good Friday Mar 26 2027 is the target — 2 leave days each gets a 7-day break. Peak whale shark and manta season. 10+ dives on liveaboard. Pristine reefs, rock formations, boulders. AOW preferred. Not a must-do — first to cut if leave conflicts.</div>
+      </div>
+    </div>
+
+    <div class="future-card" onclick="toggleFuture('f4')">
+      <div class="future-header">
+        <div>
+          <div class="future-name">🇵🇭 Coron, Philippines</div>
+          <div class="future-highlight">WWII Japanese wrecks (10+), lake diving</div>
+        </div>
+        <div class="future-priority p-medium">MEDIUM<br>2027</div>
+      </div>
+      <div class="future-detail" id="f4">
+        <div class="future-grid">
+          <div class="future-box"><div class="future-box-label">Best time</div><div class="future-box-value">Mar–May, Nov–Dec</div></div>
+          <div class="future-box"><div class="future-box-label">Min. dives</div><div class="future-box-value">30+</div></div>
+          <div class="future-box"><div class="future-box-label">Days needed</div><div class="future-box-value">5–7 nights minimum</div></div>
+          <div class="future-box"><div class="future-box-label">Leave</div><div class="future-box-value">Shing: 3–4d / GF: 3–4d</div></div>
+          <div class="future-box"><div class="future-box-label">Est. cost</div><div class="future-box-value">~SGD 1,800–2,500/couple</div></div>
+          <div class="future-box"><div class="future-box-label">Transport</div><div class="future-box-value">SIN→Manila or Puerto Princesa, domestic to Busuanga</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">10 WWII Japanese wrecks — needs minimum 5 dive days to do justice. Wreck Diver cert ideal before going for penetration. Barracuda Lake (thermocline lake diving) is unique globally. One of the best wreck destinations in the world. Don't rush this into a long weekend.</div>
+      </div>
+    </div>
+
+    <div class="future-card" onclick="toggleFuture('f5')">
+      <div class="future-header">
+        <div>
+          <div class="future-name">🇮🇩 Nusa Penida — Mola Mola</div>
+          <div class="future-highlight">Ocean sunfish, mantas, strong drift</div>
+        </div>
+        <div class="future-priority p-medium">Optional 2026<br>HIGH 2027</div>
+      </div>
+      <div class="future-detail" id="f5">
+        <div class="future-grid">
+          <div class="future-box"><div class="future-box-label">Best time</div><div class="future-box-value">Jul–Oct (peak Sep–Oct)</div></div>
+          <div class="future-box"><div class="future-box-label">Min. dives</div><div class="future-box-value">30+</div></div>
+          <div class="future-box"><div class="future-box-label">Days needed</div><div class="future-box-value">3 nights</div></div>
+          <div class="future-box"><div class="future-box-label">Leave</div><div class="future-box-value">Shing: 1d / GF: 1d</div></div>
+          <div class="future-box"><div class="future-box-label">Est. cost</div><div class="future-box-value">~SGD 1,400/couple</div></div>
+          <div class="future-box"><div class="future-box-label">Transport</div><div class="future-box-value">SIN→Bali, overnight Sanur, fast boat to Nusa Penida</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">Crystal Bay for mola mola, Manta Point year-round. Strong unpredictable currents — manageable at 35+ dives. Depart Thu night, sleep Sanur, first ferry Sat 7am → catch 8:30am dive boat (tight but doable). Sep/Oct gives best mola mola probability as water is coldest.</div>
+      </div>
+    </div>
+
+    <div class="future-card" onclick="toggleFuture('f6')">
+      <div class="future-header">
+        <div>
+          <div class="future-name">🇯🇵 Yonaguni / Miyako (Okinawa)</div>
+          <div class="future-highlight">Hammerhead sharks, underwater monument</div>
+        </div>
+        <div class="future-priority p-medium">MEDIUM<br>Jan–Mar 2027</div>
+      </div>
+      <div class="future-detail" id="f6">
+        <div class="future-grid">
+          <div class="future-box"><div class="future-box-label">Best time</div><div class="future-box-value">Jan–Mar (hammerheads)</div></div>
+          <div class="future-box"><div class="future-box-label">Min. dives</div><div class="future-box-value">50+</div></div>
+          <div class="future-box"><div class="future-box-label">Days needed</div><div class="future-box-value">5–7 nights</div></div>
+          <div class="future-box"><div class="future-box-label">Leave</div><div class="future-box-value">Shing: 4–5d / GF: 4–5d</div></div>
+          <div class="future-box"><div class="future-box-label">Est. cost</div><div class="future-box-value">~SGD 3,000–4,000/couple</div></div>
+          <div class="future-box"><div class="future-box-label">Transport</div><div class="future-box-value">SIN→Naha→Ishigaki→Yonaguni (multi-hop)</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">Hammerhead season strictly Jan–Mar. Yonaguni Monument (possible ancient ruins, 25m) is unique globally. Can fold into a longer Okinawa trip combining with Ishigaki mantas. If Nov 2026 Okinawa trip doesn't include Yonaguni, this is the Jan–Mar 2027 return.</div>
+      </div>
+    </div>
+
+    <div class="future-card" onclick="toggleFuture('f7')">
+      <div class="future-header">
+        <div>
+          <div class="future-name">🇮🇩 Raja Ampat</div>
+          <div class="future-highlight">Highest marine biodiversity on earth</div>
+        </div>
+        <div class="future-priority p-high">HIGH<br>Deepavali 2027</div>
+      </div>
+      <div class="future-detail" id="f7">
+        <div class="future-grid">
+          <div class="future-box"><div class="future-box-label">Best time</div><div class="future-box-value">Oct–Apr</div></div>
+          <div class="future-box"><div class="future-box-label">Min. dives</div><div class="future-box-value">80–100</div></div>
+          <div class="future-box"><div class="future-box-label">Days needed</div><div class="future-box-value">7–10 nights liveaboard</div></div>
+          <div class="future-box"><div class="future-box-label">Leave</div><div class="future-box-value">Shing: 5–6d / GF: 5–6d</div></div>
+          <div class="future-box"><div class="future-box-label">Est. cost</div><div class="future-box-value">~SGD 4,000–7,000/couple</div></div>
+          <div class="future-box"><div class="future-box-label">Transport</div><div class="future-box-value">SIN→Sorong (via Jakarta/Makassar), liveaboard</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">Cape Kri and Blue Magic require confident buoyancy and experience — don't go before 80 dives, you'll miss half of what's there. Deepavali 2027 anchor is the target window. Liveaboard preferred over resort. Mantas, wobbegong sharks, pygmy seahorses, schooling fish. The ultimate SE Asia dive trip.</div>
+      </div>
+    </div>
+
+    <div class="future-card" onclick="toggleFuture('f8')">
+      <div class="future-header">
+        <div>
+          <div class="future-name">🇵🇭 Malapascua — Thresher Sharks</div>
+          <div class="future-highlight">Thresher sharks at dawn cleaning station</div>
+        </div>
+        <div class="future-priority p-medium">MEDIUM<br>2027</div>
+      </div>
+      <div class="future-detail" id="f8">
+        <div class="future-grid">
+          <div class="future-box"><div class="future-box-label">Best time</div><div class="future-box-value">Year-round (best Mar–May)</div></div>
+          <div class="future-box"><div class="future-box-label">Min. dives</div><div class="future-box-value">30+</div></div>
+          <div class="future-box"><div class="future-box-label">Days needed</div><div class="future-box-value">3–4 nights</div></div>
+          <div class="future-box"><div class="future-box-label">Leave</div><div class="future-box-value">Shing: 2–3d / GF: 2–3d</div></div>
+          <div class="future-box"><div class="future-box-label">Est. cost</div><div class="future-box-value">~SGD 1,200–1,800/couple</div></div>
+          <div class="future-box"><div class="future-box-label">Transport</div><div class="future-box-value">SIN→Cebu, bus/van to Maya pier, bangka to Malapascua</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">Dawn dives at Monad Shoal (25–30m) for thresher sharks — very reliable sightings. Need 2 early mornings for good chances. Combine with Moalboal sardine run (30 min from Cebu) for a dual-destination Philippines trip. Combine both into one trip to justify the flight.</div>
+      </div>
+    </div>
+
+    <div class="future-card" onclick="toggleFuture('f9')">
+      <div class="future-header">
+        <div>
+          <div class="future-name">🇵🇭 Moalboal — Sardine Run</div>
+          <div class="future-highlight">Millions of sardines in baitball, year-round</div>
+        </div>
+        <div class="future-priority p-medium">MEDIUM<br>Combine with Malapascua</div>
+      </div>
+      <div class="future-detail" id="f9">
+        <div class="future-grid">
+          <div class="future-box"><div class="future-box-label">Best time</div><div class="future-box-value">Year-round (unique globally)</div></div>
+          <div class="future-box"><div class="future-box-label">Min. dives</div><div class="future-box-value">20+</div></div>
+          <div class="future-box"><div class="future-box-label">Days needed</div><div class="future-box-value">1–2 days (combine with Malapascua)</div></div>
+          <div class="future-box"><div class="future-box-label">Leave</div><div class="future-box-value">Shing: 2–3d / GF: 2–3d</div></div>
+          <div class="future-box"><div class="future-box-label">Est. cost</div><div class="future-box-value">Included in Malapascua trip</div></div>
+          <div class="future-box"><div class="future-box-label">Transport</div><div class="future-box-value">SIN→Cebu, 2hr bus to Moalboal</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">The Moalboal sardine run is permanent — a giant resident baitball year-round, unique globally. Turtles also present. Don't do as a standalone trip — always combine with Malapascua threshers for a complete Philippines trip.</div>
+      </div>
+    </div>
+
+    <div class="future-card" onclick="toggleFuture('f10')">
+      <div class="future-header">
+        <div>
+          <div class="future-name">🇮🇩 Lembeh Strait</div>
+          <div class="future-highlight">World's best muck diving — rarest macro critters</div>
+        </div>
+        <div class="future-priority p-defer">LOW<br>2028</div>
+      </div>
+      <div class="future-detail" id="f10">
+        <div class="future-grid">
+          <div class="future-box"><div class="future-box-label">Best time</div><div class="future-box-value">Year-round</div></div>
+          <div class="future-box"><div class="future-box-label">Min. dives</div><div class="future-box-value">100+</div></div>
+          <div class="future-box"><div class="future-box-label">Days needed</div><div class="future-box-value">7–10 nights</div></div>
+          <div class="future-box"><div class="future-box-label">Leave</div><div class="future-box-value">Shing: 4–5d / GF: 4–5d</div></div>
+          <div class="future-box"><div class="future-box-label">Est. cost</div><div class="future-box-value">~SGD 2,500–3,500/couple</div></div>
+          <div class="future-box"><div class="future-box-label">Transport</div><div class="future-box-value">SIN→Manado (~SGD 500 flights), short drive to Lembeh</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">Macro photography capital of the world — mimic octopus, hairy frogfish, flamboyant cuttlefish, blue-ringed octopus. Only makes sense when you have macro setup + TG-7 + 100+ dives and good buoyancy. Flights to Manado are expensive. Combine with Bunaken reef diving for a full Sulawesi trip.</div>
+      </div>
+    </div>
+
+    <div class="future-card" onclick="toggleFuture('f11')">
+      <div class="future-header">
+        <div>
+          <div class="future-name">🇯🇵 USS Emmons (Okinawa/Kerama)</div>
+          <div class="future-highlight">WWII US destroyer, 22–40m, intact wreck</div>
+        </div>
+        <div class="future-priority" style="color:#38bdf8;font-size:11px;font-weight:700;">INCLUDED<br>Okinawa 2026</div>
+      </div>
+      <div class="future-detail" id="f11">
+        <div class="future-grid">
+          <div class="future-box"><div class="future-box-label">Best time</div><div class="future-box-value">Year-round</div></div>
+          <div class="future-box"><div class="future-box-label">Min. dives</div><div class="future-box-value">50+ + Deep cert</div></div>
+          <div class="future-box"><div class="future-box-label">Days needed</div><div class="future-box-value">Folded into Okinawa trip</div></div>
+          <div class="future-box"><div class="future-box-label">Leave</div><div class="future-box-value">Included in Okinawa leave</div></div>
+          <div class="future-box"><div class="future-box-label">Est. cost</div><div class="future-box-value">Included in Okinawa cost</div></div>
+          <div class="future-box"><div class="future-box-label">Transport</div><div class="future-box-value">Part of Kerama Islands itinerary</div></div>
+        </div>
+        <div class="detail-label">Notes</div>
+        <div class="detail-text">Requires Deep Diver cert + 50+ dives + drift experience. In the Nov 2026 Okinawa plan — assess on the ground if ready. If not ready by then (dive count or experience), defer to a 2027 Okinawa return trip. Deep cert from Phuket + 65 dives by Okinawa means you should be ready.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEAVE TAB -->
+  <div class="tab-content" id="tab-leave">
+    <div class="section-title">Leave Summary 2026</div>
+
+    <div class="total-bar">
+      <div>
+        <div class="total-item-label">Shing remaining</div>
+        <div class="total-item-value">8.5d</div>
+      </div>
+      <div>
+        <div class="total-item-label">Shing used</div>
+        <div class="total-item-value">~7d</div>
+        <div class="total-item-sub">inc. optional Nusa</div>
+      </div>
+      <div>
+        <div class="total-item-label">GF used</div>
+        <div class="total-item-value">~6d</div>
+        <div class="total-item-sub">inc. optional Nusa</div>
+      </div>
+    </div>
+
+    <div class="leave-card">
+      <div class="leave-row">
+        <div class="leave-trip">Perhentian (Jun)</div>
+        <div class="leave-vals">
+          <div class="leave-val">2d <span>Shing</span></div>
+          <div class="leave-val">1d <span>GF</span></div>
+        </div>
+      </div>
+      <div class="leave-row">
+        <div class="leave-trip">Phuket (Jul)</div>
+        <div class="leave-vals">
+          <div class="leave-val">0d <span>Shing</span></div>
+          <div class="leave-val">0d <span>GF</span></div>
+        </div>
+      </div>
+      <div class="leave-row">
+        <div class="leave-trip">Tioman (Aug–Oct)</div>
+        <div class="leave-vals">
+          <div class="leave-val">0d <span>Shing</span></div>
+          <div class="leave-val">0d <span>GF</span></div>
+        </div>
+      </div>
+      <div class="leave-row">
+        <div class="leave-trip">Singapore Phase 1 (Sep)</div>
+        <div class="leave-vals">
+          <div class="leave-val">0d <span>Shing</span></div>
+          <div class="leave-val">0d <span>GF</span></div>
+        </div>
+      </div>
+      <div class="leave-row">
+        <div class="leave-trip">Nusa Penida (Sep/Oct) — optional</div>
+        <div class="leave-vals">
+          <div class="leave-val">1d <span>Shing</span></div>
+          <div class="leave-val">1d <span>GF</span></div>
+        </div>
+      </div>
+      <div class="leave-row">
+        <div class="leave-trip">Tulamben (Sep–Oct)</div>
+        <div class="leave-vals">
+          <div class="leave-val">0d <span>Shing</span></div>
+          <div class="leave-val">1d <span>GF</span></div>
+        </div>
+      </div>
+      <div class="leave-row">
+        <div class="leave-trip">Singapore Phase 2 (Nov) — optional</div>
+        <div class="leave-vals">
+          <div class="leave-val">0d <span>Shing</span></div>
+          <div class="leave-val">0d <span>GF</span></div>
+        </div>
+      </div>
+      <div class="leave-row" style="border-top: 1px solid #334155; margin-top: 4px; padding-top: 4px;">
+        <div class="leave-trip">Okinawa (Nov, Deepavali anchor)</div>
+        <div class="leave-vals">
+          <div class="leave-val">4d <span>Shing</span></div>
+          <div class="leave-val">4d <span>GF</span></div>
+        </div>
+      </div>
+      <div class="leave-row" style="font-weight: 700;">
+        <div class="leave-trip" style="color:#fff;">Total used</div>
+        <div class="leave-vals">
+          <div class="leave-val" style="color:#38bdf8;">7d <span>Shing</span></div>
+          <div class="leave-val" style="color:#38bdf8;">6d <span>GF</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card green">
+      <div class="info-title green">📋 Key Rules</div>
+      <ul class="info-list">
+        <li>GF cannot take leave before end of Aug 2026</li>
+        <li>GF off Sat–Tue, works Wed–Sun physically on-site</li>
+        <li>Shing WFH on travel/rest days (never on dive days)</li>
+        <li>24hr no-fly buffer after last dive — non-negotiable, no exceptions</li>
+        <li>Deepavali Mon 9 Nov 2026 = Public Holiday, no leave needed</li>
+        <li>Shing: 8.5 leave days remaining in 2026</li>
+        <li>GF: Cannot plan schedule swaps until end of Aug 2026</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleCard(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+
+  function toggleFuture(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
