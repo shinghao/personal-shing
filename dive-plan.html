@@ -37,6 +37,15 @@
     .badge-optional { background: #f59e0b; }
     .badge-recommended { background: #8b5cf6; }
 
+    .card-past { background: #0a0f1a; border: 1px solid #1a2535; border-radius: 16px; padding: 16px; margin-bottom: 12px; opacity: 0.55; position: relative; }
+    .card-past::after { content: "✓ DONE"; position: absolute; top: 16px; right: 16px; font-size: 10px; font-weight: 800; color: #34d399; letter-spacing: 2px; }
+    .card-past .card-name { color: #64748b; }
+    .card-past .card-date { color: #334155; }
+    .card-past .card-icon { filter: grayscale(1) opacity(0.5); }
+    .card-past .card-right { display: none; }
+    .card-past .card-detail { margin-top: 16px; padding-top: 16px; border-top: 1px solid #1e293b; display: none; }
+    .card-past .card-detail.open { display: block; }
+
     .card-detail { margin-top: 16px; padding-top: 16px; border-top: 1px solid #1e293b; display: none; }
     .card-detail.open { display: block; }
 
@@ -285,18 +294,14 @@
     <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:2px;margin:4px 0 12px;">✅ Past Trips</div>
 
     <!-- Past: Phuket OW -->
-    <div class="card" style="border-color:#14532d;opacity:0.85;">
+    <div class="card-past">
       <div class="card-header" onclick="toggleCard('p1')">
         <div class="card-left">
           <div class="card-icon">🎓</div>
           <div>
-            <div class="card-name">Phuket — Open Water <span class="badge" style="background:#475569;">Done</span></div>
-            <div class="card-date">Aussie Divers</div>
+            <div class="card-name">Phuket — Open Water</div>
+            <div class="card-date">Aussie Divers · SGD 2,000</div>
           </div>
-        </div>
-        <div class="card-right">
-          <div class="card-dives" style="color:#34d399;">Completed</div>
-          <div class="card-cost">SGD 2,000</div>
         </div>
       </div>
       <div class="card-detail" id="p1">
@@ -307,18 +312,14 @@
     </div>
 
     <!-- Past: Pemuteran AOW -->
-    <div class="card" style="border-color:#14532d;opacity:0.85;">
+    <div class="card-past">
       <div class="card-header" onclick="toggleCard('p2')">
         <div class="card-left">
           <div class="card-icon">🎓</div>
           <div>
-            <div class="card-name">Pemuteran / Menjangan — Advanced OW <span class="badge" style="background:#475569;">Done</span></div>
-            <div class="card-date">Northwest Bali</div>
+            <div class="card-name">Pemuteran / Menjangan — Advanced OW</div>
+            <div class="card-date">Northwest Bali · SGD 2,000</div>
           </div>
-        </div>
-        <div class="card-right">
-          <div class="card-dives" style="color:#34d399;">Completed</div>
-          <div class="card-cost">SGD 2,000</div>
         </div>
       </div>
       <div class="card-detail" id="p2">
