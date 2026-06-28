@@ -157,11 +157,12 @@
 </div>
 
 <div class="tabs">
-  <button class="tab active" onclick="switchTab('trips', this)">🗓 2026 Plan</button>
+  <button class="tab active" onclick="switchTab('trips', this)">🗓 Trips</button>
   <button class="tab" onclick="switchTab('gear', this)">🎽 Gear</button>
   <button class="tab" onclick="switchTab('certs', this)">📜 Certs</button>
   <button class="tab" onclick="switchTab('future', this)">🌍 Bucket List</button>
   <button class="tab" onclick="switchTab('leave', this)">📅 Leave</button>
+  <button class="tab" onclick="switchTab('debrief', this)">📋 Debrief</button>
 </div>
 
 <div class="content">
@@ -277,19 +278,15 @@
       </div>
     </div>
 
-    <!-- Trip 1: Perhentian -->
-    <div class="card">
+    <!-- Trip 1: Perhentian — DONE -->
+    <div class="card-past">
       <div class="card-header" onclick="toggleCard('t1')">
         <div class="card-left">
           <div class="card-icon">🐢</div>
           <div>
-            <div class="card-name">Perhentian <span class="badge badge-confirmed">Confirmed</span></div>
-            <div class="card-date">Fri 26 Jun 2026</div>
+            <div class="card-name">Perhentian</div>
+            <div class="card-date">Fri 26 Jun 2026 · SGD 2,450</div>
           </div>
-        </div>
-        <div class="card-right">
-          <div class="card-dives">+6 dives each</div>
-          <div class="card-cost">SGD 2,000</div>
         </div>
       </div>
       <div class="card-detail" id="t1">
@@ -299,8 +296,8 @@
           <div class="stat-box"><div class="stat-label">Us after</div><div class="stat-value blue">19 / 26</div></div>
         </div>
         <div class="detail-label">Notes</div>
-        <div class="detail-text">6 dives each, no night dive. East coast Malaysia open Mar–Oct. Good reef and turtles. Gen reaches 19 dives — enough for Phuket Deep Diver (minimum is 15 + AOW).</div>
-        <div class="tags"><span class="tag">🐠 Reef</span><span class="tag">🐢 Turtles</span><span class="tag">🇲🇾 East Coast</span></div>
+        <div class="detail-text">6 dives each, no night dive. East coast Malaysia. Good reef and turtles. Gen at 19 dives, Shing 26. See Debrief tab for full post-trip analysis.</div>
+        <div class="tags"><span class="tag">🐠 Reef</span><span class="tag">🐢 Turtles</span><span class="tag">🇲🇾 East Coast</span><span class="tag">📋 See Debrief</span></div>
       </div>
     </div>
 
@@ -1360,9 +1357,151 @@
     </div>
   </div>
 
-</div>
+  <!-- DEBRIEF TAB -->
+  <div class="tab-content" id="tab-debrief">
+    <div class="section-title">📋 Trip Debriefs</div>
 
-<script>
+    <!-- Perhentian Debrief -->
+    <div class="info-card blue" style="margin-bottom:12px;">
+      <div class="info-title blue">🐢 Perhentian — Jun 2026 · 6 dives · 18m max · Nitrox</div>
+      <div style="font-size:12px;color:#64748b;margin-top:2px;">Shing (54kg, 165cm) + Gen</div>
+    </div>
+
+    <!-- Focus for next trip -->
+    <div class="gear-card" style="border:1px solid #7c3aed;background:#0d0a1e;">
+      <div class="gear-when" style="color:#a78bfa;">🎯 Focus for next trip (Phuket)</div>
+      <div class="gear-item"><div class="gear-emoji">✏️</div><div class="gear-name">Mask-equalize on descent + settle buoyancy on a normal breath (small taps, wait) — watch if air gap shrinks</div></div>
+    </div>
+
+    <!-- Problem tracker -->
+    <div class="gear-card">
+      <div class="gear-when">💨 Air Consumption — TOP PRIORITY</div>
+      <div class="gear-item"><div class="gear-emoji">⚠️</div><div class="gear-name">Shing uses ~30 bar more than Gen every dive</div></div>
+      <div class="gear-reason">Not body size (Shing is smallest in group). Not over-weighting. Real causes: fast/shallow breathing, task-stress from filming, buoyancy correction kicks, and being cold (lean body loses heat = burns air).</div>
+      <div class="gear-tip">🔧 Fix: Long slow complete exhales from diaphragm. Don't gulp-and-hold (traps CO₂). Move less. Stay warm with 3mm wetsuit. Most of the gap closes by 40–50 dives.</div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:#64748b;">Did bar gap shrink?</span>
+        <span style="font-size:11px;background:#1e293b;color:#94a3b8;padding:3px 10px;border-radius:99px;">☐ Check Phuket</span>
+      </div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">⚖️ Weighting</div>
+      <div class="gear-item"><div class="gear-emoji">✅</div><div class="gear-name">2.4kg is about right now</div></div>
+      <div class="gear-reason">History of confusing advice (1.6 → 3 → 2.4kg). Nobody actually weight-checked Shing; they guessed. Adding lead band-aided a control problem. No longer floating up at safety stop = weighting basically correct.</div>
+      <div class="gear-tip">🔧 Fix: Do a proper one-time surface weight check — near-empty tank, empty BCD, hold normal breath → should hover at eye level, sink slowly on exhale. Do NOT add weight.</div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:#64748b;">Still stable at safety stop?</span>
+        <span style="font-size:11px;background:#1e293b;color:#94a3b8;padding:3px 10px;border-radius:99px;">☐ Check Phuket</span>
+      </div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">🎈 Hovering / Buoyancy Control</div>
+      <div class="gear-item"><div class="gear-emoji">⚠️</div><div class="gear-name">Can't hover still without constantly fighting it</div></div>
+      <div class="gear-reason">Setting BCD neutral on a big held breath (most buoyant moment) → returns to normal breathing → floats up. Using lungs to do the BCD's job.</div>
+      <div class="gear-tip">🔧 Fix: Stop kicking, go still, settle. Breathe normally and shallowly. Add air in tiny taps then WAIT (BCD reacts with delay — over-control = not waiting). Target: gently bobbing one spot on normal breath. Cue: "Small taps, wait, breathe normal, settle, stop touching everything."</div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:#64748b;">Can hover one spot without constant fixing?</span>
+        <span style="font-size:11px;background:#1e293b;color:#94a3b8;padding:3px 10px;border-radius:99px;">☐ Check Phuket</span>
+      </div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">📹 Breathing to descend for filming</div>
+      <div class="gear-item"><div class="gear-emoji">✅</div><div class="gear-name">Shing already NOT holding breath — keep it that way</div></div>
+      <div class="gear-reason">Never hold breath underwater (expansion injury risk on ascent). Shing is already doing this correctly.</div>
+      <div class="gear-tip">🔧 Fix: Instead of holding — shift breathing range. Exhale fully, take smaller shallower top-ups, live in the lower part of lung volume for those seconds (still moving air). Return to fuller breathing to rise. Lungs = a slow trim dial.</div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:#64748b;">Can settle to film using breath range, no holding?</span>
+        <span style="font-size:11px;background:#1e293b;color:#94a3b8;padding:3px 10px;border-radius:99px;">☐ Check Phuket</span>
+      </div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">🥽 Mask Squeeze, Forehead Mark & Nose Leak</div>
+      <div class="gear-item"><div class="gear-emoji">⚠️</div><div class="gear-name">Mask pressed hard between eyebrows, nose leaked mid-dive</div></div>
+      <div class="gear-reason">Not equalizing mask on descent → air compresses → suctions onto face. Over-tightened strap fighting leaks → distorts skirt (more leaks). Rental mask that doesn't fit.</div>
+      <div class="gear-tip">🔧 Fix: Gently exhale a little air through nose into mask every couple of metres on descent. Loosen strap — barely snug, not cranked. Check for stray hair under skirt. Own Gull Luvos mask solves fit — but fix the equalizing first or it'll squeeze in any mask.</div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:#64748b;">Less squeeze / no forehead mark / less leak?</span>
+        <span style="font-size:11px;background:#1e293b;color:#94a3b8;padding:3px 10px;border-radius:99px;">☐ Check Phuket</span>
+      </div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">👂 Ears & Sinuses — TAKE SERIOUSLY</div>
+      <div class="gear-item"><div class="gear-emoji">⚠️</div><div class="gear-name">Ears stuck after diving + blocked nose for 2 days after</div></div>
+      <div class="gear-reason">Equalizing/sinus strain. Stuck ears helped by jumping = likely outer-ear water. Combined with 2-day congestion worth monitoring.</div>
+      <div class="gear-tip">🔧 Fix: Equalize early and often — start before leaving surface, every metre before feeling pressure. Never force Valsalva. If ear won't clear, ascend slightly and retry. Never dive congested (reverse block risk). If recurs every trip → see dive-medicine doctor or ENT.</div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:#64748b;">Easier equalizing / less post-dive congestion?</span>
+        <span style="font-size:11px;background:#1e293b;color:#94a3b8;padding:3px 10px;border-radius:99px;">☐ Check Phuket</span>
+      </div>
+    </div>
+
+    <div class="gear-card">
+      <div class="gear-when">🦵 Trim & Frog Kick</div>
+      <div class="gear-item"><div class="gear-emoji">🔄</div><div class="gear-name">Trim could be flatter, frog kick still weak — improving</div></div>
+      <div class="gear-reason">Buoyancy improved this trip (could go lower to film and station — real milestone). Trim and frog kick come with reps and feed directly into air consumption.</div>
+      <div class="gear-tip">🔧 Focus: One thing per dive. Next trip focus = mask equalizing + buoyancy settling first. Frog kick after that's sorted.</div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:#64748b;">Less drifting up/down when moving?</span>
+        <span style="font-size:11px;background:#1e293b;color:#94a3b8;padding:3px 10px;border-radius:99px;">☐ Check Phuket</span>
+      </div>
+    </div>
+
+    <!-- What worked -->
+    <div class="info-card green">
+      <div class="info-title green">✅ What worked — keep doing</div>
+      <ul class="info-list">
+        <li>Strip off before rinsing on the boat (used toilet cubicle) — worked well</li>
+        <li>Watson reef-safe sunscreen — fine, keep using</li>
+        <li>Nitrox — felt no different (correct). Worth it on liveaboards + repetitive dive days</li>
+        <li>Buoyancy improved — could go lower to film and station on Nemo. Real progress vs before</li>
+      </ul>
+    </div>
+
+    <!-- Gear triggered -->
+    <div class="gear-card">
+      <div class="gear-when">🛒 Gear decisions from this trip</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;">🩱 Full 3mm Wetsuit (Scubapro Definition)</div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:3px;">Lean body = cold-prone = burns more air. Full suit solves warmth, sea-lice, tan lines. Decision confirmed: full 3mm, not rashguard.</div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;">🥽 Gull Luvos Mask</div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:3px;">Rental squeeze + leak + forehead mark confirmed need for own fitted mask. Fix descent equalizing first — it'll squeeze in any mask if you don't.</div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;">👟 Booties</div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:3px;">Dove open-heel Scubapro fins barefoot → blistering. Never dive open-heel without booties again. Let blisters heal fully first.</div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;">🕶 Sunglasses (Asian fit)</div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:3px;">Ray-Bans slide when sweaty, touch cheeks. Want: Asian/low-bridge fit, raised nose pads, rubber grips, polarised. Options: Owndays (~SGD 100–200) or Oakley Holbrook (A) / Frogskins (A) (~SGD 200+).</div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;">🧂 Electrolytes</div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:3px;">Post-dive fatigue + tired eyes partly dehydration (dry air, immersion, sun). Pack for every trip going forward.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Health note -->
+    <div class="info-card amber">
+      <div class="info-title amber">🏥 Post-trip health note</div>
+      <ul class="info-list">
+        <li>Tired eyes, hard to concentrate, general tiredness 1–2 days after. Likely normal: post-dive fatigue + dehydration + sun glare + mask squeeze eye strain.</li>
+        <li>Fix: water, electrolytes, food, rest, off screens.</li>
+        <li>Watch for (seek help if any): joint/limb pain, numbness/tingling, weakness, dizziness, rash, confusion, or anything clearly worsening. DCS unlikely on shallow 18m nitrox dives but worth knowing.</li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
   function switchTab(tab, el) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
